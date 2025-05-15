@@ -16,7 +16,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import todo.todoapp.entity.Member;
 import todo.todoapp.repository.MemberRepository;
 
-
 import java.io.IOException;
 
 @Component
@@ -26,10 +25,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final MemberRepository memberRepository;
 
+    // ✅ 화이트리스트 경로 (startsWith 방식으로 필터링할 예정)
+    private static final List<String> EXCLUDE_URLS = List.of(
+            "/api/auth/kakao/callback",
+            "/api/auth/kakao/url",
+            "/api/auth/signup",
+            "/api/auth/login"
+    );
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+        String requestURI = request.getRequestURI();
+
+        // ✅ 화이트리스트 경로는 필터 통과시킴
+        if (EXCLUDE_URLS.stream().anyMatch(requestURI::startsWith)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
@@ -40,7 +54,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         final String token = authHeader.substring(7);
 
-        // 🔍 로그 추가
         System.out.println("🛡 JWT 인증 시도 중 - 토큰: " + token);
 
         if (!jwtUtil.validateToken(token)) {

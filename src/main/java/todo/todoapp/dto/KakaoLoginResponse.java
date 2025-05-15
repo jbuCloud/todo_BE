@@ -8,4 +8,6 @@ import lombok.Getter;
 public class KakaoLoginResponse {
     private Long memberId;
     private String accessToken;
+
+
 }
