@@ -10,6 +10,9 @@ import todo.todoapp.dto.TodoUpdateRequest;
 import todo.todoapp.entity.Member;
 import todo.todoapp.entity.Todo;
 import todo.todoapp.service.TodoService;
+import todo.todoapp.dto.TodoDateUpdateRequest;
+
+
 
 import java.util.List;
 
@@ -50,6 +53,23 @@ public class TodoController {
         todoService.deleteTodo(todoId);
         return ResponseEntity.noContent().build();
     }
+
+    // ✅ 날짜 바꾸기
+    @PutMapping("/{todoId}/date")
+    public ResponseEntity<Todo> updateDueDate(@PathVariable Long todoId,
+                                              @RequestBody TodoDateUpdateRequest request) {
+        Todo updatedTodo = todoService.updateDueDate(todoId, request.getDueDate());
+        return ResponseEntity.ok(updatedTodo);
+    }
+
+    // ✅ 내일도 하기
+    @PostMapping("/{todoId}/duplicate")
+    public ResponseEntity<Todo> duplicateTodoForTomorrow(@PathVariable Long todoId) {
+        Todo duplicated = todoService.duplicateTodoForTomorrow(todoId);
+        return ResponseEntity.ok(duplicated);
+    }
+
+
 
 
 }

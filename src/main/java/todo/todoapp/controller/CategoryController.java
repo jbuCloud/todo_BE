@@ -37,7 +37,8 @@ public class CategoryController {
 
 
     @GetMapping
-    public ResponseEntity<List<Category>> getCategories(@RequestParam Long memberId) {
+    public ResponseEntity<List<Category>> getCategories(@AuthenticationPrincipal Member member) {
+        Long memberId = member.getMemberId();
         List<Category> categories = categoryService.getCategoriesByMemberId(memberId);
         return ResponseEntity.ok(categories);
     }

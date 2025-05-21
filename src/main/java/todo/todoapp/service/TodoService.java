@@ -85,6 +85,35 @@ public class TodoService {
         todoRepository.deleteById(todoId);
     }
 
+    //날짜 바꾸기
+    public Todo updateDueDate(Long todoId, LocalDateTime dueDate) {
+        Todo todo = todoRepository.findById(todoId)
+                .orElseThrow(() -> new IllegalArgumentException("할 일을 찾을 수 없습니다."));
+        todo.setDueDate(dueDate);
+        return todoRepository.save(todo);
+    }
+
+    // 내일도 하기
+    public Todo duplicateTodoForTomorrow(Long todoId) {
+        Todo original = todoRepository.findById(todoId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 할 일을 찾을 수 없습니다."));
+
+        Todo copy = new Todo();
+        copy.setTitle(original.getTitle());
+        copy.setDescription(original.getDescription());
+        copy.setPriority(original.getPriority());
+        copy.setDueDate(original.getDueDate().plusDays(1));
+        copy.setCompleted(false);
+
+        // ✅ ID만 복사 (DB에 실제로 저장되는 값)
+        copy.setMemberId(original.getMemberId());
+        copy.setCategoryId(original.getCategoryId());
+
+        return todoRepository.save(copy);
+    }
+
+
+
 
 }
 

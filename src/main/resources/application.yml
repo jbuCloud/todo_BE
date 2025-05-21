@@ -10,6 +10,10 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  h2:
+    console:
+      enabled: true         # ✅ H2 콘솔 사용 설정
+      path: /h2-console     # ✅ 기본 경로 (선택적 명시)
 
 logging:
   level:
@@ -20,6 +24,5 @@ kakao:
   redirect-uri: http://localhost:3000/callback
 
 server:
-   address: 0.0.0.0
-   port: 8080
-
+  address: 0.0.0.0
+  port: 8080
