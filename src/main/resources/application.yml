@@ -12,12 +12,14 @@ spring:
         format_sql: true
   h2:
     console:
-      enabled: true         # ✅ H2 콘솔 사용 설정
-      path: /h2-console     # ✅ 기본 경로 (선택적 명시)
+      enabled: true
+      path: /h2-console
 
 logging:
   level:
     org.hibernate.SQL: debug
+    org.hibernate.type: trace           # 추가!
+    org.hibernate.tool.hbm2ddl: debug   # 추가!
 
 kakao:
   client-id: 52c4872fc30d423c710bb20bb07f874e
