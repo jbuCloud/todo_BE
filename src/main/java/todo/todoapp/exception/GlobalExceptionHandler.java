@@ -37,4 +37,5 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleGeneralException(HttpServletRequest request, SignupRequiredException e) {
         return ResponseEntity.status(401).body(new SignupInitResponse(e));
     }
+
 }
